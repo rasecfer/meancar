@@ -1,6 +1,9 @@
 const mongoose = require('mongoose')
 const express = require('express')
 const Car = require('../models/car')
+const Role = require('../helper/role')
+const auth = require('../middleware/auth')
+const authorize = require('../middleware/role')
 // const app = express()
 
 // Router de Express
@@ -9,7 +12,7 @@ const router = express.Router()
 // Definir variables para express-validation
 const { check, validationResult } = require('express-validator')
 
-router.get('/', async(req, res) => {
+router.get('/', [auth, authorize([Role.Admin])], async(req, res) => {
   const result = await Car
     .find()
     .populate('brand', 'name country')

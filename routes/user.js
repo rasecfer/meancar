@@ -47,7 +47,10 @@ router.post('/', [
     password: hashPassword
   })
   const result = await user.save()
-  res.status(201).send({
+
+  const jwtToken = user.generateJWT()
+
+  res.status(201).header('Authorization', jwtToken).send({
     _id: result._id,
     name: result.name,
     email: result.email

@@ -27,7 +27,9 @@ router.post('/', [
   const validPassword = await bcrypt.compare(req.body.password, user.password)
   if(!validPassword) return res.status(400).send("Usuario o contraseña no válidos!")
 
-  res.send("Usuario y contraseña correctos!")
+  const jwtToken = user.generateJWT()
+
+  res.header('Authorization', jwtToken).send(jwtToken)
 
 })
 
